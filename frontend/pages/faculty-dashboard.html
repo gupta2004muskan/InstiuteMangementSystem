@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - Institute Management System</title>
+    <link rel="stylesheet" href="../css/style.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-brand">IMS - Faculty Portal</div>
+        <div class="navbar-menu">
+            <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+            <a href="#" onclick="showSection('courses')">My Courses</a>
+            <a href="#" onclick="showSection('attendance')">Mark Attendance</a>
+            <a href="#" onclick="showSection('grades')">Enter Grades</a>
+            <a href="#" onclick="showSection('queries')">Student Queries</a>
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar"></div>
+                <span id="user-name"></span>
+                <button class="btn btn-sm btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="dashboard-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section active">
+            <h1>Welcome, <span id="welcome-name"></span>!</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>My Courses</h3>
+                    <div class="stat-value" id="total-courses">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <div class="stat-value" id="total-students">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Queries</h3>
+                    <div class="stat-value" id="pending-queries">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Classes Today</h3>
+                    <div class="stat-value" id="classes-today">0</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showSection('attendance')">Mark Attendance</button>
+                    <button class="btn btn-success" onclick="showSection('grades')">Enter Grades</button>
+                    <button class="btn btn-secondary" onclick="showSection('queries')">Answer Queries</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Courses Section -->
+        <div id="courses-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>My Courses</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Department</th>
+                                <th>Semester</th>
+                                <th>Students</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-tbody">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading courses...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Attendance Section -->
+        <div id="attendance-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Mark Attendance</h2>
+                </div>
+                <div class="form-group">
+                    <label>Select Course</label>
+                    <select id="attendance-course" onchange="loadCourseStudents()">
+                        <option value="">Select a course</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="attendance-date" value="">
+                </div>
+                <div id="students-attendance-container">
+                    <p class="empty-state">Select a course to mark attendance</p>
+                </div>
+                <button class="btn btn-primary" onclick="submitAttendance()" style="margin-top: 20px;">Submit Attendance</button>
+            </div>
+        </div>
+        
+        <!-- Grades Section -->
+        <div id="grades-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Enter Grades</h2>
+                </div>
+                <div class="form-group">
+                    <label>Select Course</label>
+                    <select id="grades-course" onchange="loadCourseStudentsForGrades()">
+                        <option value="">Select a course</option>
+                    </select>
+                </div>
+                <div id="students-grades-container">
+                    <p class="empty-state">Select a course to enter grades</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Queries Section -->
+        <div id="queries-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Student Queries</h2>
+                </div>
+                <div id="queries-container">
+                    <p>Loading queries...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Grade Entry Modal -->
+    <div id="grade-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Enter Grade</h3>
+                <button class="close-btn" onclick="closeModal('grade-modal')">&times;</button>
+            </div>
+            <form onsubmit="submitGrade(event)">
+                <input type="hidden" id="grade-student-id">
+                <input type="hidden" id="grade-course-id">
+                
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="grade-student-name" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label>Exam Type</label>
+                    <select id="grade-exam-type" required>
+                        <option value="MIDTERM">Midterm</option>
+                        <option value="FINAL">Final</option>
+                        <option value="ASSIGNMENT">Assignment</option>
+                        <option value="QUIZ">Quiz</option>
+                        <option value="PROJECT">Project</option>
+                        <option value="PRACTICAL">Practical</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Marks Obtained</label>
+                        <input type="number" id="grade-marks-obtained" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Marks</label>
+                        <input type="number" id="grade-total-marks" step="0.01" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Grade</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Answer Query Modal -->
+    <div id="answer-query-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Answer Query</h3>
+                <button class="close-btn" onclick="closeModal('answer-query-modal')">&times;</button>
+            </div>
+            <form onsubmit="submitAnswer(event)">
+                <input type="hidden" id="answer-query-id">
+                
+                <div class="form-group">
+                    <label>Question</label>
+                    <textarea id="answer-question" rows="3" readonly></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Answer</label>
+                    <textarea id="answer-text" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Answer</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="../js/config.js"></script>
+    <script src="../js/faculty.js"></script>
+</body>
+</html>

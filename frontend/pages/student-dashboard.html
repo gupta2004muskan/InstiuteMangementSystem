@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Institute Management System</title>
+    <link rel="stylesheet" href="../css/style.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-brand">IMS - Student Portal</div>
+        <div class="navbar-menu">
+            <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+            <a href="#" onclick="showSection('courses')">My Courses</a>
+            <a href="#" onclick="showSection('attendance')">Attendance</a>
+            <a href="#" onclick="showSection('grades')">Grades</a>
+            <a href="#" onclick="showSection('queries')">Ask Question</a>
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar"></div>
+                <span id="user-name"></span>
+                <button class="btn btn-sm btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="dashboard-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section active">
+            <h1>Welcome, <span id="welcome-name"></span>!</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Enrolled Courses</h3>
+                    <div class="stat-value" id="enrolled-courses">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Attendance</h3>
+                    <div class="stat-value" id="avg-attendance">0%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Current GPA</h3>
+                    <div class="stat-value" id="current-gpa">0.0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Queries</h3>
+                    <div class="stat-value" id="pending-queries">0</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showSection('courses')">Enroll in Courses</button>
+                    <button class="btn btn-success" onclick="downloadReportCard()">Download Report Card</button>
+                    <button class="btn btn-secondary" onclick="showSection('queries')">Ask a Question</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Courses Section -->
+        <div id="courses-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>My Courses</h2>
+                    <button class="btn btn-primary" onclick="showAvailableCourses()">Enroll in New Course</button>
+                </div>
+                <div class="table-container">
+                    <table id="courses-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Faculty</th>
+                                <th>Schedule</th>
+                                <th>Credits</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-tbody">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading courses...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Attendance Section -->
+        <div id="attendance-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Attendance Overview</h2>
+                </div>
+                <div id="attendance-container">
+                    <p>Loading attendance data...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Grades Section -->
+        <div id="grades-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>My Grades</h2>
+                    <button class="btn btn-success" onclick="downloadReportCard()">Download Report Card</button>
+                </div>
+                <div class="table-container">
+                    <table id="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Exam Type</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>GPA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grades-tbody">
+                            <tr>
+                                <td colspan="5" class="empty-state">Loading grades...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <h3>Overall GPA: <span id="overall-gpa">0.0</span></h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Queries Section -->
+        <div id="queries-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Ask a Question</h2>
+                </div>
+                <form onsubmit="submitQuery(event)" style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="query-category" required>
+                            <option value="ACADEMIC">Academic</option>
+                            <option value="ADMINISTRATIVE">Administrative</option>
+                            <option value="TECHNICAL">Technical</option>
+                            <option value="COURSE_RELATED">Course Related</option>
+                            <option value="EXAM_RELATED">Exam Related</option>
+                            <option value="GENERAL">General</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="query-subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Question</label>
+                        <textarea id="query-question" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Question</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>My Questions</h2>
+                </div>
+                <div id="queries-list">
+                    <p>Loading your questions...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Available Courses Modal -->
+    <div id="available-courses-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Available Courses</h3>
+                <button class="close-btn" onclick="closeModal('available-courses-modal')">&times;</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Credits</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="available-courses-tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/config.js"></script>
+    <script src="../js/student.js"></script>
+</body>
+</html>

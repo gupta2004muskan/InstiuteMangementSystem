@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institute Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Institute Management System</h1>
+                <p>Welcome! Please login to continue</p>
+            </div>
+            
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                <button class="tab-btn" onclick="showTab('register')">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="login-form" class="form-container active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="register-form" class="form-container">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-firstname">First Name</label>
+                            <input type="text" id="reg-firstname" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-lastname">Last Name</label>
+                            <input type="text" id="reg-lastname" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number</label>
+                        <input type="tel" id="reg-phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-role">Role</label>
+                        <select id="reg-role" required>
+                            <option value="">Select Role</option>
+                            <option value="STUDENT">Student</option>
+                            <option value="FACULTY">Faculty</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+            
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+</body>
+</html>
