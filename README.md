@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 Institute Management System
 
 A comprehensive, industry-level Institute Management System built with **Spring Boot** and modern web technologies. This system provides complete management capabilities for educational institutions including student enrollment, course management, attendance tracking, grade management, and an AI-powered query solver.
@@ -722,3 +723,6 @@ For support, email support@institute.edu or create an issue in the repository.
 ---
 
 **Happy Learning! 🎓**
+=======
+# InstiuteMangementSystem
+>>>>>>> d4078f245b74fe39e98fb541464d93478b6f0ca9
